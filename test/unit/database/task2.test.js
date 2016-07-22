@@ -61,6 +61,7 @@ describe('database level 2', () => {
           email: {
             $like: '%@gmail.com',
           },
+          
         },
       });
       result.length.should.be.eq(3);
@@ -73,9 +74,11 @@ describe('database level 2', () => {
   it('根據年齡排序使用者', async (done) => {
     try {
       const result = await models.User.findAll({
-        order: 'age ASC',
+        order: 'age DESC',
       });
-      result[0].age.should.be.eq(18);
+      
+      
+      result[0].age.should.be.eq(30); //DESC老排到幼
       done();
     } catch (e) {
       done(e);

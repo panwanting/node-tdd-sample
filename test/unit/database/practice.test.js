@@ -1,6 +1,6 @@
 import task1_initModel from '../../../src/database/task1';
 
-describe('practice', () => {
+describe.only('practice', () => {
   let models = null;
   beforeEach(async (done) => {
     try {
@@ -42,7 +42,7 @@ describe('practice', () => {
         price: 100,
       };
 
-      let result;
+      let result = await models.Post.create(input) ;    //第二error解答，不要直接等於input
 
       result.title.should.be.eq('AAA');
       result.desc.should.be.eq('BBB');
@@ -74,7 +74,7 @@ describe('practice', () => {
     it('使用 sequelize 尋找 targetPost ', async (done) => {
       try {
 
-        let findTarget;
+        let findTarget = await models.Post.findById(targetPost.id); //第三error解答  
 
         findTarget.id.should.be.eq(targetPost.id);
         done();
@@ -91,8 +91,11 @@ describe('practice', () => {
           price: 999,
         }
 
-        let findTarget;
-        let result;
+        let findTarget = await models.Post.findById(targetPost.id); //第四個error
+        findTarget.title = input.title;
+        findTarget.desc = input.desc;
+        findTarget.price = input.price;
+        let result = await findTarget.save();
 
         result.title.should.be.eq(input.title);
         result.desc.should.be.eq(input.desc);
@@ -106,7 +109,8 @@ describe('practice', () => {
     it('使用 sequelize 刪除 targetPost', async (done) => {
       try {
 
-        let findTarget;
+         let findTarget = await models.Post.findById(targetPost.id); //第五個error
+         await findTarget.destroy();
 
         let check = await models.Post.findAll();
         (check.length === 0).should.be.true;
